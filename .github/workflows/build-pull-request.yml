@@ -206,16 +206,12 @@ jobs:
       - name: C++ tests
         shell: pwsh
         run: |
-          # Copy faiss DLL and all conda dependency DLLs next to the test executable
+          # Copy all required DLLs next to the test executable:
+          # faiss.dll, gtest/gtest_main DLLs, and conda dependency DLLs
           Copy-Item build\faiss\Release\*.dll build\tests\Release\
+          Copy-Item build\bin\Release\*.dll build\tests\Release\
           Copy-Item "$env:CONDA_PREFIX\Library\bin\*.dll" build\tests\Release\ -ErrorAction SilentlyContinue
-          # Diagnostic: show what DLLs are in the test directory
-          Write-Host "DLLs in test directory:"
-          Get-ChildItem build\tests\Release\*.dll | Select-Object Name | Format-Table -HideTableHeaders
-          # Also add conda dirs to PATH as fallback
-          $env:PATH = "$PWD\build\tests\Release;$env:CONDA_PREFIX\Library\bin;$env:CONDA_PREFIX\bin;$env:PATH"
-          # Quick check: can the test exe start?
-          & build\tests\Release\faiss_test.exe --gtest_list_tests 2>&1 | Select-Object -First 5
+          $env:PATH = "$env:CONDA_PREFIX\Library\bin;$env:PATH"
           cd build
           ctest --output-on-failure -C Release
   windows-x86_64-conda:
