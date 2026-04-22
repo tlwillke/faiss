@@ -195,7 +195,7 @@ jobs:
             -DBUILD_SHARED_LIBS=ON `
             -DFAISS_ENABLE_GPU=OFF `
             -DFAISS_OPT_LEVEL=dd `
-            -DFAISS_ENABLE_PYTHON=OFF `
+            -DFAISS_ENABLE_PYTHON=ON `
             -DFAISS_ENABLE_C_API=ON `
             -DBLA_VENDOR=Intel10_64_dyn `
             -DCMAKE_BUILD_TYPE=Release `
@@ -214,6 +214,17 @@ jobs:
           $env:PATH = "$env:CONDA_PREFIX\Library\bin;$env:PATH"
           cd build
           ctest --output-on-failure -C Release -E "SIMDConfig.modern_hardware_has_simd_support"
+      - name: Install Python extension
+        shell: pwsh
+        run: |
+          $env:PATH = "$PWD\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
+          cd build\faiss\python
+          python setup.py install
+      - name: Python tests
+        shell: pwsh
+        run: |
+          $env:PATH = "$PWD\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
+          pytest tests/test_*.py
   windows-x86_64-conda:
     name: Windows x86_64 (conda)
     needs: linux-x86_64-cmake
