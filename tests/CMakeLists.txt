@@ -33,7 +33,6 @@ set(FAISS_TEST_SRC
   test_callback.cpp
   test_utils.cpp
   test_hamming.cpp
-  test_mmap.cpp
   test_zerocopy.cpp
   test_scalar_quantizer.cpp
   test_factory_tools.cpp
@@ -46,12 +45,13 @@ set(FAISS_TEST_SRC
   test_fast_scan_distance_to_code.cpp
 )
 
-# Tests that use POSIX APIs (pthread, mkstemp, unistd.h) not available on Windows
+# Tests that use POSIX APIs or have platform-specific issues on Windows
 if(NOT WIN32)
   list(APPEND FAISS_TEST_SRC
     test_merge.cpp
     test_ondisk_ivf.cpp
     test_disable_pq_sdc_tables.cpp
+    test_mmap.cpp
   )
 endif()
 

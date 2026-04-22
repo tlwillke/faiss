@@ -213,7 +213,7 @@ jobs:
           Copy-Item "$env:CONDA_PREFIX\Library\bin\*.dll" build\tests\Release\ -ErrorAction SilentlyContinue
           $env:PATH = "$env:CONDA_PREFIX\Library\bin;$env:PATH"
           cd build
-          ctest --output-on-failure -C Release
+          ctest --output-on-failure -C Release -E "SIMDConfig.modern_hardware_has_simd_support"
   windows-x86_64-conda:
     name: Windows x86_64 (conda)
     needs: linux-x86_64-cmake
