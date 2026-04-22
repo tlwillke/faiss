@@ -190,6 +190,8 @@ jobs:
       - name: Build
         shell: pwsh
         run: |
+          $pythonExe = (Get-Command python).Source
+          $pythonDir = Split-Path $pythonExe
           cmake -B build -T v143 -A x64 -G "Visual Studio 17 2022" `
             -DBUILD_TESTING=ON `
             -DBUILD_SHARED_LIBS=ON `
@@ -199,6 +201,7 @@ jobs:
             -DFAISS_ENABLE_C_API=ON `
             -DBLA_VENDOR=Intel10_64_dyn `
             -DCMAKE_BUILD_TYPE=Release `
+            -DPython_ROOT_DIR="$pythonDir" `
             .
           # Add faiss.dll and dependency DLLs to PATH for GoogleTest discovery
           $env:PATH = "$PWD\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
