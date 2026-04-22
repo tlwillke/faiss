@@ -226,10 +226,11 @@ jobs:
           cd build\faiss\python
           python setup.py install
       - name: Python tests
-        shell: bash
+        shell: pwsh
         run: |
-          export PATH="$PWD/build/faiss/Release:$CONDA_PREFIX/Library/bin:$PATH"
-          pytest tests/test_*.py
+          $env:PATH = "$PWD\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
+          $tests = (Get-ChildItem tests/test_*.py).FullName
+          pytest $tests
   windows-x86_64-conda:
     name: Windows x86_64 (conda)
     needs: linux-x86_64-cmake
