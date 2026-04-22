@@ -222,12 +222,14 @@ jobs:
       - name: Install Python extension
         shell: pwsh
         run: |
-          $env:PATH = "$PWD\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
+          $repoRoot = $PWD.Path
+          $env:PATH = "$repoRoot\build\faiss\Release;$env:CONDA_PREFIX\Library\bin;$env:PATH"
           cd build\faiss\python
           python setup.py install
           # Copy faiss.dll and MKL DLLs next to the installed _swigfaiss.pyd
-          $siteDir = python -c "import faiss, os; print(os.path.dirname(faiss.__file__))"
-          Copy-Item $env:OLDPWD\build\faiss\Release\faiss.dll $siteDir\
+          $siteDir = python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
+          $siteDir = "$siteDir\faiss"
+          Copy-Item "$repoRoot\build\faiss\Release\faiss.dll" $siteDir\
           Copy-Item "$env:CONDA_PREFIX\Library\bin\mkl_*.dll" $siteDir\ -ErrorAction SilentlyContinue
           Copy-Item "$env:CONDA_PREFIX\Library\bin\libiomp5md.dll" $siteDir\ -ErrorAction SilentlyContinue
       - name: Python tests
