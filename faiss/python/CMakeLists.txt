@@ -295,15 +295,15 @@ find_package(Python REQUIRED
   COMPONENTS Development.Module NumPy
 )
 
-add_library(faiss_python_callbacks EXCLUDE_FROM_ALL
+add_library(faiss_python_callbacks STATIC EXCLUDE_FROM_ALL
   python_callbacks.cpp
 )
 set_property(TARGET faiss_python_callbacks
   PROPERTY POSITION_INDEPENDENT_CODE ON
 )
 
-if ("${CMAKE_SYSTEM_NAME}" MATCHES "AIX" OR WIN32)
-  target_link_libraries(faiss_python_callbacks PRIVATE faiss Python::Module)
+if ("${CMAKE_SYSTEM_NAME}" MATCHES "AIX")
+target_link_libraries(faiss_python_callbacks PRIVATE faiss)
 endif()
 
 # Hack so that python_callbacks.h can be included as
