@@ -302,11 +302,8 @@ set_property(TARGET faiss_python_callbacks
   PROPERTY POSITION_INDEPENDENT_CODE ON
 )
 
-if ("${CMAKE_SYSTEM_NAME}" MATCHES "AIX")
-target_link_libraries(faiss_python_callbacks PRIVATE faiss)
-endif()
-if(WIN32)
-  target_link_libraries(faiss_python_callbacks PRIVATE Python::Module)
+if ("${CMAKE_SYSTEM_NAME}" MATCHES "AIX" OR WIN32)
+  target_link_libraries(faiss_python_callbacks PRIVATE faiss Python::Module)
 endif()
 
 # Hack so that python_callbacks.h can be included as
