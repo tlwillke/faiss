@@ -104,6 +104,11 @@ struct IndexIVFFastScan : IndexIVF {
     void init_code_packer();
 
     ~IndexIVFFastScan() override;
+    // rule of five defaults
+    IndexIVFFastScan(const IndexIVFFastScan&) = default;
+    IndexIVFFastScan& operator=(const IndexIVFFastScan&) = delete;
+    IndexIVFFastScan(IndexIVFFastScan&&) = default;
+    IndexIVFFastScan& operator=(IndexIVFFastScan&&) = delete;
 
     /// orig's inverted lists (for debugging)
     InvertedLists* orig_invlists = nullptr;
@@ -406,12 +411,15 @@ struct IndexIVFFastScan : IndexIVF {
 };
 
 struct IVFFastScanStats {
-    uint64_t times[10];
-    uint64_t t_compute_distance_tables, t_round;
-    uint64_t t_copy_pack, t_scan, t_to_flat;
-    uint64_t reservoir_times[4];
-    double t_aq_encode;
-    double t_aq_norm_encode;
+    uint64_t times[10] = {};
+    uint64_t t_compute_distance_tables = 0;
+    uint64_t t_round = 0;
+    uint64_t t_copy_pack = 0;
+    uint64_t t_scan = 0;
+    uint64_t t_to_flat = 0;
+    uint64_t reservoir_times[4] = {};
+    double t_aq_encode = 0;
+    double t_aq_norm_encode = 0;
 
     double Mcy_at(int i) {
         return times[i] / (1000 * 1000.0);
@@ -424,10 +432,23 @@ struct IVFFastScanStats {
         reset();
     }
     void reset() {
-        memset(this, 0, sizeof(*this));
+        for (auto& t : times) {
+            t = 0;
+        }
+        t_compute_distance_tables = 0;
+        t_round = 0;
+        t_copy_pack = 0;
+        t_scan = 0;
+        t_to_flat = 0;
+        for (auto& t : reservoir_times) {
+            t = 0;
+        }
+        t_aq_encode = 0;
+        t_aq_norm_encode = 0;
     }
 };
 
-FAISS_API extern IVFFastScanStats IVFFastScan_stats;
+FAISS_API extern IVFFastScanStats
+        IVFFastScan_stats; // NOLINT(facebook-avoid-non-const-global-variables)
 
 } // namespace faiss

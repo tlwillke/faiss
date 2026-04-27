@@ -62,6 +62,11 @@ struct IndexHNSW : Index {
     explicit IndexHNSW(Index* storage, int M = 32);
 
     ~IndexHNSW() override;
+    // rule of five defaults
+    IndexHNSW(const IndexHNSW&) = default;
+    IndexHNSW& operator=(const IndexHNSW&) = delete;
+    IndexHNSW(IndexHNSW&&) noexcept = default;
+    IndexHNSW& operator=(IndexHNSW&&) = delete;
 
     /// Adds vectors to the index. May not be called concurrently.
     void add(idx_t n, const float* x) override;

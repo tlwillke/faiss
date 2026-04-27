@@ -57,6 +57,11 @@ struct IndexLSH : IndexFlatCodes {
     void transfer_thresholds(LinearTransform* vt);
 
     ~IndexLSH() override {}
+    // rule of five defaults
+    IndexLSH(const IndexLSH&) = default;
+    IndexLSH& operator=(const IndexLSH&) = default;
+    IndexLSH(IndexLSH&&) noexcept = default;
+    IndexLSH& operator=(IndexLSH&&) noexcept = default;
 
     IndexLSH();
 

@@ -64,6 +64,15 @@ struct IndexIVFAdditiveQuantizerFastScan : IndexIVFFastScan {
     IndexIVFAdditiveQuantizerFastScan();
 
     ~IndexIVFAdditiveQuantizerFastScan() override;
+    // rule of five defaults
+    IndexIVFAdditiveQuantizerFastScan(
+            const IndexIVFAdditiveQuantizerFastScan&) = default;
+    IndexIVFAdditiveQuantizerFastScan& operator=(
+            const IndexIVFAdditiveQuantizerFastScan&) = delete;
+    IndexIVFAdditiveQuantizerFastScan(IndexIVFAdditiveQuantizerFastScan&&) =
+            default;
+    IndexIVFAdditiveQuantizerFastScan& operator=(
+            IndexIVFAdditiveQuantizerFastScan&&) = delete;
 
     // built from an IndexIVFAQ
     explicit IndexIVFAdditiveQuantizerFastScan(
