@@ -273,7 +273,8 @@ void IndexBinaryHashStats::reset() {
     memset((void*)this, 0, sizeof(*this));
 }
 
-IndexBinaryHashStats indexBinaryHash_stats;
+IndexBinaryHashStats
+        indexBinaryHash_stats; // NOLINT(facebook-avoid-non-const-global-variables)
 
 /*******************************************************
  * IndexBinaryMultiHash implementation
