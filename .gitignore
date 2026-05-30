@@ -1,3 +1,5 @@
+.idea/
+build-avx512/
 *.swp
 *.swo
 *.o
